@@ -1,0 +1,7 @@
+doas pkg install python3 -y
+doas pkg install py-tkinter -y
+doas pkg install py3-pillow -y
+doas pkg install gedit -y
+doas pkg install snort -y
+doas pkg install py-matplotlib -y
+pip install psutil -q 2>/dev/null
