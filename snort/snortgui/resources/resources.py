@@ -3,16 +3,29 @@ import tkinter as tk
 from tkinter import ttk,messagebox
 from tkinter import *
 
-with open('.resources/temp/admin.pass', 'r') as file:
-    sudo_password = file.read()
 
-if os.path.exists('.resources/temp/setup.conf'):
+if os.path.exists('setup.conf'):
     messagebox.showinfo("Your Application is ready","All resources are downloaded and ready to be launched")
     os.system('python3 snortgui.py')
 
 else:
     #tkinter window declaration : Progressbar
-    command = 'sudo -S cp .resources/snortgui.py .'
+    command = 'mkdir -p ~/.snortgui/resources'
+    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
+    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    process.stdin.flush()
+    
+    command = 'cp -r ../* ~/.snortgui/resources'
+    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
+    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    process.stdin.flush()
+    
+    command = 'mkdir -p ~/.local/bin/'
+    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
+    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    process.stdin.flush()
+    
+    command = 'ln -sf ~/.snortgui/resources/snortgui.py ~/.local/bin/snortgui'
     process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
     process.stdin.write(sudo_password.encode('utf-8') + b'\n')
     process.stdin.flush()
@@ -56,13 +69,13 @@ else:
         button.place(x=63,y=80)
         
 
-        with open('.resources/temp/setup.conf','w') as f:
+        with open('setup.conf','w') as f:
             f.write("This is a configuration file to notify the wizard a first time installation")
            
         username = os.getlogin()
         hostname = socket.gethostname()
         
-        command='sudo -S chown -R '+username+":"+hostname+" ../snortgui"
+        command='sudo -S chown -R '+username+":"+hostname+" ~/.snortgui"
         process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
         process.stdin.write(sudo_password.encode('utf-8') + b'\n')
         process.stdin.flush()

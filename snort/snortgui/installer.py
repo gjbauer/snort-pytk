@@ -58,7 +58,7 @@ def agree():
 	result=messagebox.askokcancel("Agreement Confirmation","By clicking 'OK', you agree with the t&c")
 	if(result==True):
 		snort.destroy()
-		os.system("python3 .resources/resources.py")
+		os.system("python3 resources/resources.py")
 
 def disagree():
 	result=messagebox.askyesno("Disagreement Confirmation","To ensure proper functioning of application, accept the t&c")

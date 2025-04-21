@@ -11,7 +11,7 @@ sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrato
 try:
 	# create the main window
 	root = tk.Tk()
-	root.title('SNORT IDS GUI - w/❤ by WhiteHatCyberus')
+	root.title('SNORT IDS GUI')
 	root.geometry('1200x650+1+1')
 	root.resizable(False, False)
 
@@ -20,14 +20,14 @@ try:
 	canvas.pack(fill=tk.BOTH, expand=True)
 
 	# load and display the background image
-	img = Image.open('.resources/info/images/snort.jpg')
+	img = Image.open('~/.snortgui/resources/info/images/snort.jpg')
 	img = img.resize((1200, 650), Image.ANTIALIAS)
 	img = ImageTk.PhotoImage(img)
 	canvas.create_image(0, 0, image=img, anchor=tk.NW)
 
 	# define the functions for the buttons
 	def generate_rules():
-		command='sudo -S python3 .resources/rule_generator.py'
+		command='sudo -S python3 ~/.rsnortgui/esources/rule_generator.py'
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
 		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
 		process.stdin.flush()
@@ -44,7 +44,7 @@ try:
 			messagebox.showerror("Error", "ⓘ Incorrect password, try again.")
 
 	def run_ids():
-		command='sudo -S python3 .resources/run_ids.py'
+		command='sudo -S python3 ~/.snortgui/resources/run_ids.py'
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
 		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
 		process.stdin.flush()
@@ -54,17 +54,17 @@ try:
 			root.destroy()
 
 	def log_analyser():
-		command="sudo -S python3 .resources/loganalyzer.py"
+		command="sudo -S python3 ~/.snortgui/resources/loganalyzer.py"
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
 		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
 		process.stdin.flush()
 
 	def about():
-		command="python3 .resources/about.py"
+		command="python3 ~/.snortgui/resources/about.py"
 		os.system(command)
 
 	def help():
-		command="python3 .resources/help.py"
+		command="python3 ~/.snortgui/resources/help.py"
 		os.system(command)
  
   
@@ -107,6 +107,6 @@ try:
 	menu_bar.add_cascade(label='About', menu=file_menu1)
 	root.config(menu=menu_bar)
 	root.mainloop()
-     
+
 except tk.TclError:
     exit()
