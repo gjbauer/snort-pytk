@@ -1,31 +1,43 @@
 import subprocess,os, socket
 import tkinter as tk
-from tkinter import ttk,messagebox
+from tkinter import ttk,messagebox, simpledialog
 from tkinter import *
 
+sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
 
 if os.path.exists('setup.conf'):
     messagebox.showinfo("Your Application is ready","All resources are downloaded and ready to be launched")
-    os.system('python3 snortgui.py')
+    os.system('python3 ~/.snortgui/snortgui.py')
 
 else:
     #tkinter window declaration : Progressbar
-    command = 'mkdir -p ~/.snortgui/resources'
+    try:
+    	command = 'mkdir -p ~/.snortgui/'
+    	process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
+    	process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    	process.stdin.flush()
+    except:
+    	print("~/.snortgui already exists")
+    
+    command = 'cp -r resources/* ~/.snortgui/'
     process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
     process.stdin.write(sudo_password.encode('utf-8') + b'\n')
     process.stdin.flush()
     
-    command = 'cp -r ../* ~/.snortgui/resources'
-    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
-    process.stdin.flush()
-    
-    command = 'mkdir -p ~/.local/bin/'
-    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
-    process.stdin.flush()
+    try:
+    	command = 'mkdir -p ~/.local/bin/'
+    	process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
+    	process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    	process.stdin.flush()
+    except:
+    	print("~/.local/bin exists")
     
     command = 'ln -sf ~/.snortgui/resources/snortgui.py ~/.local/bin/snortgui'
+    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
+    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    process.stdin.flush()
+    
+    command = 'chmod +x ~/.local/bin/snortgui'
     process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
     process.stdin.write(sudo_password.encode('utf-8') + b'\n')
     process.stdin.flush()
@@ -43,7 +55,7 @@ else:
             return
     #main
     def run_commands():
-        with open('.resources/info/requirements.txt','r') as f:
+        with open('resources/info/requirements.txt','r') as f:
             commands = f.readlines()
         i=1
         button1.place_forget()
@@ -75,7 +87,7 @@ else:
         username = os.getlogin()
         hostname = socket.gethostname()
         
-        command='sudo -S chown -R '+username+":"+hostname+" ~/.snortgui"
+        command='sudo -S chown -R '+username+":"+username+" ~/.snortgui"
         process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
         process.stdin.write(sudo_password.encode('utf-8') + b'\n')
         process.stdin.flush()
@@ -83,7 +95,7 @@ else:
         result=messagebox.askyesno('Installation complete','Click Yes to start SNORT GUI')
         if result==True:
             snort.destroy()
-            os.system("python3 .resources/snortgui.py")
+            os.system("python3 ~/.snortgui/snortgui.py")
         else:
             snort.destroy()
 

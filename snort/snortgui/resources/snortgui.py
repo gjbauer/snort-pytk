@@ -20,14 +20,16 @@ try:
 	canvas.pack(fill=tk.BOTH, expand=True)
 
 	# load and display the background image
-	img = Image.open('~/.snortgui/resources/info/images/snort.jpg')
+	rel = "~/.snortgui/info/images/snort.jpg"
+	abs = os.path.abspath(rel)
+	img = Image.open('')
 	img = img.resize((1200, 650), Image.ANTIALIAS)
 	img = ImageTk.PhotoImage(img)
 	canvas.create_image(0, 0, image=img, anchor=tk.NW)
 
 	# define the functions for the buttons
 	def generate_rules():
-		command='sudo -S python3 ~/.rsnortgui/esources/rule_generator.py'
+		command='sudo -S python3 ~/.snortgui/rule_generator.py'
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
 		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
 		process.stdin.flush()
@@ -44,7 +46,7 @@ try:
 			messagebox.showerror("Error", "ⓘ Incorrect password, try again.")
 
 	def run_ids():
-		command='sudo -S python3 ~/.snortgui/resources/run_ids.py'
+		command='sudo -S python3 ~/.snortgui/run_ids.py'
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
 		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
 		process.stdin.flush()
@@ -54,17 +56,17 @@ try:
 			root.destroy()
 
 	def log_analyser():
-		command="sudo -S python3 ~/.snortgui/resources/loganalyzer.py"
+		command="sudo -S python3 ~/.snortgui/loganalyzer.py"
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
 		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
 		process.stdin.flush()
 
 	def about():
-		command="python3 ~/.snortgui/resources/about.py"
+		command="python3 ~/.snortgui/about.py"
 		os.system(command)
 
 	def help():
-		command="python3 ~/.snortgui/resources/help.py"
+		command="python3 ~/.snortgui/help.py"
 		os.system(command)
  
   
