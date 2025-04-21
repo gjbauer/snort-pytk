@@ -1,3 +1,4 @@
+#!/usr/bin/python3
 import os
 os.system('sudo apt install python3-tk -q=3')
 
