@@ -20,9 +20,10 @@ try:
 	canvas.pack(fill=tk.BOTH, expand=True)
 
 	# load and display the background image
-	rel = "~/.snortgui/info/images/snort.jpg"
-	abs = os.path.abspath(rel)
-	img = Image.open('')
+	home_dir = os.path.expanduser("~")
+	rel_path = ".snortgui/info/images/snort.jpg"
+	abs_path = os.path.join(home_dir, rel_path)
+	img = Image.open(abs_path)
 	img = img.resize((1200, 650), Image.ANTIALIAS)
 	img = ImageTk.PhotoImage(img)
 	canvas.create_image(0, 0, image=img, anchor=tk.NW)
