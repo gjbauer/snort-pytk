@@ -138,7 +138,7 @@ mymenu.config(font=('calibri',(10)),bg='#54ECF7',width=9,cursor="hand2")
 mymenu['menu'].config(font=('calibri',(10)),bg='#54ECF7',cursor="hand2")
 
 #Protocol Options
- mylist2=['TCP','UDP','IP','ICMP']
+mylist2=['TCP','UDP','IP','ICMP']
 var2=StringVar()
 var2.set("Select")
 mymenu2=OptionMenu(frame,var2,*mylist2)
@@ -581,13 +581,3 @@ snort.resizable(False,False)
 
 snort.mainloop()
 
-		elif(sudo_password is None):
-exit()
-		elif(sudo_password==""):
-messagebox.showerror("Error","Enter password")
-		else:
-i=i-1
-messagebox.showerror("Error", "ⓘ Incorrect password, try again. (Attempts Left:"+str(i)+")")
-
-except tk.TclError:
-	exit()

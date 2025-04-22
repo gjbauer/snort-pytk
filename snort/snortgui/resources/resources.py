@@ -84,7 +84,7 @@ else:
         with open('setup.conf','w') as f:
             f.write("This is a configuration file to notify the wizard a first time installation")
            
-        username = os.getlogin()
+        username = tk.simpledialog.askstring("Username", "\nEnter your username:\n", show='*')
         hostname = socket.gethostname()
         
         command='sudo -S chown -R '+username+":"+username+" ~/.snortgui"

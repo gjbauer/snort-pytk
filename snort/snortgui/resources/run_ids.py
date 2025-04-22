@@ -7,8 +7,6 @@ from tkinter import filedialog, messagebox
 import psutil
 filename=""
 
-with open('.resources/temp/admin.pass', 'r') as file:
-    sudo_passwd = file.read()
 '''
 if not os.path.exists('/etc/snort/ids.conf'):
     os.system('sudo cp ~/Desktop/SNORT-GUI/snort/ids.conf /etc/snort/')
@@ -44,22 +42,16 @@ def stop_snort(window, sudo_password):
     password_entry = tk.Entry(password_window, show="*")
     password_entry.pack(padx=20, pady=10)
 
-    def verify_password():
+    def stop_snort():
         entered_password = password_entry.get()
 
         # Run the pkill command only if the entered password is correct
-        if entered_password == sudo_password:
-            p = subprocess.run(['sudo', '-S', 'pkill', 'snort'])
-            password_window.destroy()
-            window.destroy()
-            messagebox.showinfo('Snort stopped', 'Snort stopped successfully.')
-            
+        p = subprocess.run(['sudo', '-S', 'pkill', 'snort'])
+        password_window.destroy()
+        window.destroy()
+        messagebox.showinfo('Snort stopped', 'Snort stopped successfully.')
 
-        else:
-            messagebox.showerror('Incorrect Password', 'Incorrect password entered. Please try again.')
-            password_entry.delete(0, tk.END)
-
-    password_button = tk.Button(password_window, text="Stop Snort", command=verify_password)
+    password_button = tk.Button(password_window, text="Stop Snort", command=stop_snort)
     password_button.pack(padx=20, pady=10)
     password_window.resizable(False,False)
     password_window.mainloop()
@@ -125,14 +117,14 @@ def show_snort_window():
                         sudo_password = tk.simpledialog.askstring("Password Initialisation", "Enter your One Time Password:\n(⚠️ Disclaimer: Remember this password\n to stop snort manually)\n", show='*')
 
                         # Check if password is correct
-                        p = subprocess.run(['sudo', '-S', 'true'], input=bytes(sudo_password + '\n', 'utf-8'), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-                        if p.returncode != 0:
-                            messagebox.showerror("Incorrect Password", "The password you entered is incorrect. Please try again.")
-                            return
+                        #p = subprocess.run(['sudo', '-S', 'true'], input=bytes(sudo_password + '\n', 'utf-8'), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                        #if p.returncode != 0:
+                        #    messagebox.showerror("Incorrect Password", "The password you entered is incorrect. Please try again.")
+                        #    return
 
                         # Start snort
                         process_lock = threading.Lock()
-                        snort_thread = threading.Thread(target=run_snort, args=(duration_secs, process_lock, sudo_passwd,filename,interface_var))
+                        snort_thread = threading.Thread(target=run_snort, args=(duration_secs, process_lock, sudo_password,filename,interface_var))
                         snort_thread.start()
 
                         status_window = tk.Tk()
@@ -168,16 +160,6 @@ i=3
 try:
     while i>0:
         sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
-
-        if sudo_password==sudo_passwd:
-            i=0
-            show_snort_window()
-        elif(sudo_password is None):
-            exit()
-        elif(sudo_password==""):
-            messagebox.showerror("Error","Enter password")
-        else:
-            messagebox.showerror("Error", "ⓘ Incorrect password, try again. (Attempt:"+str(i)+")")
-            i=i-1
+        show_snort_window()
 except tk.TclError:
     exit()
