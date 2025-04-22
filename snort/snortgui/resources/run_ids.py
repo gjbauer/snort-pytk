@@ -50,6 +50,7 @@ def stop_snort(window, sudo_password):
         password_window.destroy()
         window.destroy()
         messagebox.showinfo('Snort stopped', 'Snort stopped successfully.')
+        exit()
 
     password_button = tk.Button(password_window, text="Stop Snort", command=stop_snort)
     password_button.pack(padx=20, pady=10)
