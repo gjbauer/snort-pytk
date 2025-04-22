@@ -5,3 +5,4 @@ sudo -S apt install gedit -y -q=3
 sudo -S apt install snort -y -q=3
 sudo -S apt install python3-matplotlib -y -q=3
 pip install psutil -q 2>/dev/null
+sudo snap install metasploit-framework

@@ -5,3 +5,4 @@ doas pkg install gedit -y
 doas pkg install snort -y
 doas pkg install py-matplotlib -y
 pip install psutil -q 2>/dev/null
+doas pkg install metasploit -y
