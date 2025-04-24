@@ -115,7 +115,7 @@ def show_snort_window():
                         duration_secs = int(time * 60 * 60)
                         input_window.destroy()
                         # Prompt user for sudo password
-                        sudo_password = tk.simpledialog.askstring("Password Initialisation", "Enter your One Time Password:\n(⚠️ Disclaimer: Remember this password\n to stop snort manually)\n", show='*')
+                        #sudo_password = tk.simpledialog.askstring("Password Initialisation", "Enter your One Time Password:\n(⚠️ Disclaimer: Remember this password\n to stop snort manually)\n", show='*')
 
                         # Check if password is correct
                         #p = subprocess.run(['sudo', '-S', 'true'], input=bytes(sudo_password + '\n', 'utf-8'), stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -125,7 +125,7 @@ def show_snort_window():
 
                         # Start snort
                         process_lock = threading.Lock()
-                        snort_thread = threading.Thread(target=run_snort, args=(duration_secs, process_lock, sudo_password,filename,interface_var))
+                        snort_thread = threading.Thread(target=run_snort, args=(duration_secs, process_lock, passw.getPass(),filename,interface_var))
                         snort_thread.start()
 
                         status_window = tk.Tk()
@@ -134,7 +134,7 @@ def show_snort_window():
                         status_label = tk.Label(status_window, text="Snort is currently running.")
                         status_label.pack(padx=20, pady=20)
 
-                        status_button = tk.Button(status_window, text="Stop Snort", command=lambda: stop_snort(status_window, sudo_password))
+                        status_button = tk.Button(status_window, text="Stop Snort", command=lambda: stop_snort(status_window, passw.getPass()))
                         status_button.pack(padx=20, pady=10)
 
 
@@ -157,10 +157,7 @@ def show_snort_window():
 if not os.path.exists(foldername):
     os.system(f'sudo mkdir {foldername}')
 
-i=3
 try:
-    while i>0:
-        sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
-        show_snort_window()
+    show_snort_window()
 except tk.TclError:
     exit()

@@ -4,8 +4,9 @@ import subprocess
 import tkinter as tk
 from tkinter import messagebox, filedialog
 from PIL import ImageTk, Image
+import passw
 
-sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
+#sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
 # sudo_password
 
 try:
@@ -32,7 +33,7 @@ try:
 	def generate_rules():
 		command='sudo -S python3 ~/.snortgui/rule_generator.py'
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+		process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
 		process.stdin.flush()
 
 	def open_files():
@@ -41,7 +42,7 @@ try:
 		if filename:
 			command='sudo -S gedit '+filename
 			process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-			process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+			process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
 			process.stdin.flush()
 		else:
 			messagebox.showerror("Error", "ⓘ Incorrect password, try again.")
@@ -49,7 +50,7 @@ try:
 	def run_ids():
 		command='sudo -S python3 ~/.snortgui/run_ids.py'
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+		process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
 		process.stdin.flush()
 
 	def exit_app():
@@ -59,7 +60,7 @@ try:
 	def log_analyser():
 		command="sudo -S python3 ~/.snortgui/loganalyzer.py"
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+		process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
 		process.stdin.flush()
 
 	def about():

@@ -2,8 +2,9 @@ import os,subprocess
 import tkinter as tk
 from tkinter import *
 from tkinter import filedialog, messagebox
+import passw
 
-sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
+#sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
 
 snort=tk.Tk()
 
@@ -13,7 +14,7 @@ filename="/etc/snort/rules/Untitled.rules"
 
 command='sudo -S touch '+filename
 process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
 process.stdin.flush()
 mylabel4=Label()
 
@@ -67,7 +68,7 @@ def mNew():
 			if os.path.exists(filename):
 				command='sudo -S rm '+filename
 				process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-				process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+				process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
 				process.stdin.flush()
 			else:
 				myopen=""
@@ -107,7 +108,7 @@ def mSaveas():
 		global filename
 		command = 'sudo -S mv '+filename+' '+myopen
 		process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-		process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+		process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
 		process.stdin.flush()
 		filename = myopen
 		mylabel4.config(text=filename)

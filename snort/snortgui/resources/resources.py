@@ -2,8 +2,9 @@ import subprocess,os, socket
 import tkinter as tk
 from tkinter import ttk,messagebox, simpledialog
 from tkinter import *
+import passw
 
-sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
+#sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
 
 if os.path.exists('setup.conf'):
     messagebox.showinfo("Your Application is ready","All resources are downloaded and ready to be launched")
@@ -14,32 +15,32 @@ else:
     try:
     	command = 'mkdir -p ~/.snortgui/'
     	process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    	process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    	process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
     	process.stdin.flush()
     except:
     	print("~/.snortgui already exists")
     
     command = 'cp -r resources/* ~/.snortgui/'
     process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
     process.stdin.flush()
     
     try:
     	command = 'mkdir -p ~/.local/bin/'
     	process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    	process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    	process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
     	process.stdin.flush()
     except:
     	print("~/.local/bin exists")
     
     command = 'ln -sf ~/.snortgui/resources/snortgui.py ~/.local/bin/snortgui'
     process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
     process.stdin.flush()
     
     command = 'chmod +x ~/.local/bin/snortgui'
     process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+    process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
     process.stdin.flush()
     
     snort = Tk()
@@ -71,7 +72,7 @@ else:
             command = command.strip()
             button['text'] = f'Downloading Components ({i+1}/{len(commands)})'
             process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-            process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+            process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
             process.stdin.flush()
             process.wait()  # wait for the subprocess to complete before moving on to the next command
             progress_bar['value'] = i+1
@@ -89,7 +90,7 @@ else:
         
         command='sudo -S chown -R '+username+":"+username+" ~/.snortgui"
         process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-        process.stdin.write(sudo_password.encode('utf-8') + b'\n')
+        process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
         process.stdin.flush()
         
         result=messagebox.askyesno('Installation complete','Click Yes to start SNORT GUI')
