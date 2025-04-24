@@ -1,3 +1,4 @@
+import os
 import tkinter as tk
 from tkinter import ttk, scrolledtext
 from PIL import ImageTk, Image
@@ -31,8 +32,11 @@ canvas.pack(fill=tk.BOTH, expand=True)
 
 # load and display the background image
 
-img = Image.open('.resources/info/images/snort_about.jpg')
-img = img.resize((600, 515), Image.ANTIALIAS)
+home_dir = os.path.expanduser("~")
+rel_path = ".snortgui/info/images/snort_about.jpg"
+abs_path = os.path.join(home_dir, rel_path)
+img = Image.open(abs_path)
+img = img.resize((600, 515), Image.LANCZOS)
 img = ImageTk.PhotoImage(img)
 canvas.create_image(0, 0, image=img, anchor=tk.NW)
 
