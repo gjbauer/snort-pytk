@@ -33,10 +33,6 @@ else:
     except:
     	print("~/.local/bin exists")
     
-    command = 'ln -sf ~/.snortgui/resources/snortgui.py ~/.local/bin/snortgui'
-    process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-    process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
-    process.stdin.flush()
     
     command = 'chmod +x ~/.local/bin/snortgui'
     process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)

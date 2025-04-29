@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import *
 from tkinter import filedialog, messagebox
 import passw
+import time
 
 #sudo_password = tk.simpledialog.askstring("Password", "\nEnter your administrator password:\n", show='*')
 
@@ -14,8 +15,10 @@ filename="/etc/snort/rules/Untitled.rules"
 
 command='sudo -S touch '+filename
 process = subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, preexec_fn=os.setsid)
-process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
-process.stdin.flush()
+time.sleep(1)
+if process.poll() is None:
+	process.stdin.write(passw.getPass().encode('utf-8') + b'\n')
+	process.stdin.flush()
 mylabel4=Label()
 
 #Title of tkinter
